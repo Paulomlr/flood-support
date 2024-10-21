@@ -29,6 +29,9 @@ public class Address {
     }
 
     public Address(String street, String number, String district, String city, String state, String zipCode) {
+        if(!isValidZipCode(zipCode)) {
+            throw new InvalidZipCodeException("Invalid zip code");
+        }
         this.street = street;
         this.number = number;
         this.district = district;
