@@ -1,8 +1,12 @@
 package com.paulo.FloodSupport.core.domain;
 
+import com.paulo.FloodSupport.core.domain.exceptions.InvalidBirthDateException;
+import com.paulo.FloodSupport.core.domain.exceptions.InvalidDateRangeException;
 import com.paulo.FloodSupport.core.domain.exceptions.InvalidSexException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -11,32 +15,44 @@ public class ShelterResident {
     private UUID shelterResidentId;
 
     private String name;
-    private Integer age;
+    private LocalDate birthDate;
     private String sex;
     private LocalDateTime entryDate;
     private LocalDateTime departureDate;
 
-    public ShelterResident(UUID shelterResidentId, String name, Integer age, String sex, LocalDateTime entryDate, LocalDateTime departureDate) {
-        if(!isValidSex(sex)) {
-            throw new InvalidSexException("Invalid sex");
-        }
+    public ShelterResident(UUID shelterResidentId, String name, LocalDate birthDate, String sex, LocalDateTime entryDate, LocalDateTime departureDate) {
+        validateSex(sex);
+        validateBirthDate(birthDate);
+        validateDateRange(departureDate);
+
         this.shelterResidentId = shelterResidentId;
         this.name = name;
-        this.age = age;
+        this.birthDate = birthDate;
         this.sex = sex;
-        this.entryDate = entryDate;
+        this.entryDate = LocalDateTime.now();
         this.departureDate = departureDate;
     }
 
-    public ShelterResident(String name, Integer age, String sex, LocalDateTime entryDate, LocalDateTime departureDate) {
-        if(!isValidSex(sex)) {
-            throw new InvalidSexException("Invalid sex");
-        }
+    public ShelterResident(String name, LocalDate birthDate, String sex, LocalDateTime entryDate, LocalDateTime departureDate) {
+        validateSex(sex);
+        validateBirthDate(birthDate);
+        validateDateRange(departureDate);
+
         this.name = name;
-        this.age = age;
+        this.birthDate = birthDate;
         this.sex = sex;
-        this.entryDate = entryDate;
+        this.entryDate = LocalDateTime.now();
         this.departureDate = departureDate;
+    }
+
+    public ShelterResident(String name, LocalDate birthDate, String sex, LocalDateTime entryDate) {
+        validateSex(sex);
+        validateBirthDate(birthDate);
+
+        this.name = name;
+        this.birthDate = birthDate;
+        this.sex = sex;
+        this.entryDate = LocalDateTime.now();
     }
 
     public ShelterResident() {
@@ -44,10 +60,6 @@ public class ShelterResident {
 
     public UUID getShelterResidentId() {
         return shelterResidentId;
-    }
-
-    public void setShelterResidentId(UUID shelterResidentId) {
-        this.shelterResidentId = shelterResidentId;
     }
 
     public String getName() {
@@ -59,11 +71,11 @@ public class ShelterResident {
     }
 
     public Integer getAge() {
-        return age;
+        return Period.between(this.birthDate, LocalDate.now()).getYears();
     }
 
-    public void setAge(Integer age) {
-        this.age = age;
+    public LocalDate getBirthDate() {
+        return birthDate;
     }
 
     public String getSex() {
@@ -71,6 +83,7 @@ public class ShelterResident {
     }
 
     public void setSex(String sex) {
+        validateSex(sex);
         this.sex = sex;
     }
 
@@ -78,20 +91,35 @@ public class ShelterResident {
         return entryDate;
     }
 
-    public void setEntryDate(LocalDateTime entryDate) {
-        this.entryDate = entryDate;
-    }
-
     public LocalDateTime getDepartureDate() {
         return departureDate;
     }
 
     public void setDepartureDate(LocalDateTime departureDate) {
+        validateDateRange(departureDate);
         this.departureDate = departureDate;
     }
 
-    public boolean isValidSex(String sex) {
+    private boolean isValidSex(String sex) {
         return sex.matches("^[FfMm]$");
+    }
+
+    private void validateSex(String sex) {
+        if(!isValidSex(sex)) {
+            throw new InvalidSexException("Invalid sex");
+        }
+    }
+
+    private void validateBirthDate(LocalDate birthDate) {
+        if(birthDate.isAfter(LocalDate.now())) {
+            throw new InvalidBirthDateException("Birth date cannot be in the future");
+        }
+    }
+
+    private void validateDateRange(LocalDateTime departureDate) {
+        if(departureDate.isBefore(this.entryDate)) {
+            throw new InvalidDateRangeException("The departure date cannot be earlier than the entry date.");
+        }
     }
 
     @Override
@@ -112,7 +140,7 @@ public class ShelterResident {
         return "ShelterResident{" +
                 "shelterResidentId=" + shelterResidentId +
                 ", name='" + name + '\'' +
-                ", age=" + age +
+                ", birthDate=" + birthDate +
                 ", sex='" + sex + '\'' +
                 ", entryDate=" + entryDate +
                 ", departureDate=" + departureDate +
