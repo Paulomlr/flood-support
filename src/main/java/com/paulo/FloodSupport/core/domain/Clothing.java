@@ -1,7 +1,7 @@
 package com.paulo.FloodSupport.core.domain;
 
 import com.paulo.FloodSupport.core.domain.enums.ClothingSize;
-import com.paulo.FloodSupport.core.domain.exceptions.InvalidSexException;
+import com.paulo.FloodSupport.core.domain.exceptions.ValidationException;
 
 import java.util.UUID;
 
@@ -49,7 +49,7 @@ public class Clothing extends Item{
 
     private void validateGender(String gender) {
         if(!isValidGender(gender)) {
-            throw new InvalidSexException("Invalid sex");
+            throw new ValidationException("Invalid sex");
         }
     }
 

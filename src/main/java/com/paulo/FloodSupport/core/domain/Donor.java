@@ -1,9 +1,7 @@
 package com.paulo.FloodSupport.core.domain;
 
 import com.paulo.FloodSupport.core.domain.enums.DonorType;
-import com.paulo.FloodSupport.core.domain.exceptions.InvalidDocumentException;
-import com.paulo.FloodSupport.core.domain.exceptions.InvalidEmailException;
-import com.paulo.FloodSupport.core.domain.exceptions.InvalidPhoneNumberException;
+import com.paulo.FloodSupport.core.domain.exceptions.ValidationException;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -101,7 +99,7 @@ public class Donor {
 
     private void validateEmail(String email) {
         if(!isValidEmail(email)) {
-            throw new InvalidEmailException("Invalid email");
+            throw new ValidationException("Invalid email");
         }
     }
 
@@ -111,7 +109,7 @@ public class Donor {
 
     private void validatePhoneNumber(String phoneNumber) {
         if(!isValidPhoneNumber(phoneNumber)) {
-            throw new InvalidPhoneNumberException("PhoneNumber invalid");
+            throw new ValidationException("PhoneNumber invalid");
         }
     }
 
@@ -121,7 +119,7 @@ public class Donor {
 
     private void validateCpfCnpj(String cpfCnpj) {
         if(!isValidCpfCnpj(cpfCnpj)) {
-            throw new InvalidDocumentException("Invalid document");
+            throw new ValidationException("Invalid document");
         }
     }
 

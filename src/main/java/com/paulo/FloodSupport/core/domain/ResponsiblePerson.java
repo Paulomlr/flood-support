@@ -1,7 +1,6 @@
 package com.paulo.FloodSupport.core.domain;
 
-import com.paulo.FloodSupport.core.domain.exceptions.InvalidEmailException;
-import com.paulo.FloodSupport.core.domain.exceptions.InvalidPhoneNumberException;
+import com.paulo.FloodSupport.core.domain.exceptions.ValidationException;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -74,7 +73,7 @@ public class ResponsiblePerson {
 
     private void validateEmail(String email) {
         if(!isValidEmail(email)) {
-            throw new InvalidEmailException("Invalid email");
+            throw new ValidationException("Invalid email");
         }
     }
     
@@ -84,7 +83,7 @@ public class ResponsiblePerson {
 
     private void validatePhoneNumber(String phoneNumber) {
         if(!isValidPhoneNumber(phoneNumber)) {
-            throw new InvalidPhoneNumberException("PhoneNumber invalid");
+            throw new ValidationException("PhoneNumber invalid");
         }
     }
 

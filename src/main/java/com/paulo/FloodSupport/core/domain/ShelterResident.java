@@ -1,8 +1,6 @@
 package com.paulo.FloodSupport.core.domain;
 
-import com.paulo.FloodSupport.core.domain.exceptions.InvalidBirthDateException;
-import com.paulo.FloodSupport.core.domain.exceptions.InvalidDateRangeException;
-import com.paulo.FloodSupport.core.domain.exceptions.InvalidSexException;
+import com.paulo.FloodSupport.core.domain.exceptions.ValidationException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -106,19 +104,19 @@ public class ShelterResident {
 
     private void validateSex(String sex) {
         if(!isValidSex(sex)) {
-            throw new InvalidSexException("Invalid sex");
+            throw new ValidationException("Invalid sex");
         }
     }
 
     private void validateBirthDate(LocalDate birthDate) {
         if(birthDate.isAfter(LocalDate.now())) {
-            throw new InvalidBirthDateException("Birth date cannot be in the future");
+            throw new ValidationException("Birth date cannot be in the future");
         }
     }
 
     private void validateDateRange(LocalDateTime departureDate) {
         if(departureDate.isBefore(this.entryDate)) {
-            throw new InvalidDateRangeException("The departure date cannot be earlier than the entry date.");
+            throw new ValidationException("The departure date cannot be earlier than the entry date.");
         }
     }
 

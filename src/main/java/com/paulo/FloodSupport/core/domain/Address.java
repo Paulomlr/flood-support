@@ -1,6 +1,6 @@
 package com.paulo.FloodSupport.core.domain;
 
-import com.paulo.FloodSupport.core.domain.exceptions.InvalidZipCodeException;
+import com.paulo.FloodSupport.core.domain.exceptions.ValidationException;
 
 import java.util.Objects;
 
@@ -17,7 +17,7 @@ public class Address {
 
     public Address(Long addressId, String street, String number, String district, String city, String state, String zipCode) {
         if(!isValidZipCode(zipCode)) {
-            throw new InvalidZipCodeException("Invalid zip code");
+            throw new ValidationException("Invalid zip code");
         }
         this.addressId = addressId;
         this.street = street;
@@ -30,7 +30,7 @@ public class Address {
 
     public Address(String street, String number, String district, String city, String state, String zipCode) {
         if(!isValidZipCode(zipCode)) {
-            throw new InvalidZipCodeException("Invalid zip code");
+            throw new ValidationException("Invalid zip code");
         }
         this.street = street;
         this.number = number;
