@@ -1,7 +1,5 @@
 package com.paulo.FloodSupport.core.domain;
 
-import com.paulo.FloodSupport.core.domain.exceptions.ItemCapacityExceededException;
-
 import java.util.*;
 
 public class DistributionCenter {
@@ -13,6 +11,7 @@ public class DistributionCenter {
     private Address address;
     private ResponsiblePerson responsiblePerson;
     private List<Donation> donations;
+    private List<Order> ordersReceived;
     private Map<Item, Integer> stock;
 
     public DistributionCenter(UUID distributionCenterId, String name, Address address, ResponsiblePerson responsiblePerson) {
@@ -21,6 +20,7 @@ public class DistributionCenter {
         this.address = address;
         this.responsiblePerson = responsiblePerson;
         this.donations = new ArrayList<>();
+        this.ordersReceived = new ArrayList<>();
         this.stock = new LinkedHashMap<>();
     }
 
@@ -29,11 +29,13 @@ public class DistributionCenter {
         this.address = address;
         this.responsiblePerson = responsiblePerson;
         this.donations = new ArrayList<>();
+        this.ordersReceived = new ArrayList<>();
         this.stock = new LinkedHashMap<>();
     }
 
     public DistributionCenter() {
         this.donations = new ArrayList<>();
+        this.ordersReceived = new ArrayList<>();
         this.stock = new LinkedHashMap<>();
     }
 
@@ -77,21 +79,26 @@ public class DistributionCenter {
         return stock;
     }
 
-    public void addDonation(Donation donation) {
-        donationProcessReceived(donation);
-        this.donations.add(donation);
+    public void addOrder(Order order) {
+        this.ordersReceived.add(order);
     }
 
-    private void donationProcessReceived(Donation donation) {
+    public List<Order> getOrdersReceived() {
+        return ordersReceived;
+    }
+
+    public void addDonation(Donation donation) {
         for(DonationItem donationItem : donation.getItems()) {
             Item item = donationItem.getItem();
             int currentQuantity = stock.getOrDefault(item, 0);
-            int totalQuantity = currentQuantity + donationItem.getQuantity();
-            if (totalQuantity > MAX_ITEM_CAPACITY) {
-                throw new ItemCapacityExceededException("Item capacity exceeded for: " + donationItem.getItem().getName());
-            }
-            stock.put(item, totalQuantity);
+            stock.put(item, currentQuantity + donationItem.getQuantity());
         }
+        this.donations.add(donation);
+    }
+
+    public boolean canStore(Item item, int quantityToAdd) {
+        int currentQuantity = stock.getOrDefault(item, 0);
+        return (currentQuantity + quantityToAdd) <= MAX_ITEM_CAPACITY;
     }
 
     @Override
