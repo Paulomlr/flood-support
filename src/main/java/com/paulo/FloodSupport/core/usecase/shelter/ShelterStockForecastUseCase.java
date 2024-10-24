@@ -1,4 +1,4 @@
-package com.paulo.FloodSupport.core.usecase;
+package com.paulo.FloodSupport.core.usecase.shelter;
 
 import java.time.LocalDate;
 import java.util.UUID;

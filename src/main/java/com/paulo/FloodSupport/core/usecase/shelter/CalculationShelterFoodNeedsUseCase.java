@@ -1,4 +1,4 @@
-package com.paulo.FloodSupport.core.usecase;
+package com.paulo.FloodSupport.core.usecase.shelter;
 
 import com.paulo.FloodSupport.core.domain.Item;
 import com.paulo.FloodSupport.core.domain.enums.UnitMeasurement;

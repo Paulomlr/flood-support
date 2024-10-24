@@ -1,4 +1,4 @@
-package com.paulo.FloodSupport.core.usecase;
+package com.paulo.FloodSupport.core.usecase.shelter;
 
 import com.paulo.FloodSupport.core.domain.Shelter;
 import com.paulo.FloodSupport.core.domain.ShelterResident;
