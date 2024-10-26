@@ -3,10 +3,7 @@ package com.paulo.FloodSupport.core.domain;
 import com.paulo.FloodSupport.core.domain.exceptions.ResidentNotFoundException;
 import com.paulo.FloodSupport.core.domain.exceptions.ShelterCapacityExceededException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class Shelter {
 
@@ -20,6 +17,7 @@ public class Shelter {
     private Integer shelterCapacity;
     private Integer numberShelterResident;
     private List<ShelterResident> shelterResidents;
+    private Map<Item, Integer> stock;
 
     public Shelter(UUID shelterId, String name, Address address, ResponsiblePerson responsiblePerson) {
         this.shelterId = shelterId;
@@ -90,6 +88,16 @@ public class Shelter {
         }
         this.shelterResidents.remove(shelterResident);
         numberShelterResident--;
+    }
+
+    public void addItemStock(Item item, int quantityToAdd) {
+        int currentQuantity = stock.getOrDefault(item, 0);
+        stock.put(item, currentQuantity + quantityToAdd);
+    }
+
+    public boolean canStore(Item item, int quantityToAdd) {
+        int currentQuantity = stock.getOrDefault(item, 0);
+        return (currentQuantity + quantityToAdd) <= MAX_ITEM_CAPACITY;
     }
 
     public Double getOccupationPercentage() {
