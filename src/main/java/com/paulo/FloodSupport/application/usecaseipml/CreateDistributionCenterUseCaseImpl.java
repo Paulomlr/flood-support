@@ -6,7 +6,7 @@ import com.paulo.FloodSupport.core.usecase.distributionCenter.CreateDistribution
 
 public class CreateDistributionCenterUseCaseImpl implements CreateDistributionCenterUseCase {
 
-    private DistributionCenterRepository distributionCenterRepository;
+    private final DistributionCenterRepository distributionCenterRepository;
 
     public CreateDistributionCenterUseCaseImpl(DistributionCenterRepository distributionCenterRepository) {
         this.distributionCenterRepository = distributionCenterRepository;
