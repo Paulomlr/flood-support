@@ -101,6 +101,16 @@ public class DistributionCenter {
         return (currentQuantity + quantityToAdd) <= MAX_ITEM_CAPACITY;
     }
 
+    public void updateStock(Item item, int quantityToDecreased) {
+        int currentQuantity = stock.getOrDefault(item, 0);
+        stock.put(item, currentQuantity - quantityToDecreased);
+    }
+
+    public boolean canSend(Item item, int quantityToAdd) {
+        int currentQuantity = stock.getOrDefault(item, 0);
+        return (currentQuantity - quantityToAdd) >= 0;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
