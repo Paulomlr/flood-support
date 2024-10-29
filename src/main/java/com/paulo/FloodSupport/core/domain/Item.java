@@ -1,5 +1,7 @@
 package com.paulo.FloodSupport.core.domain;
 
+import com.paulo.FloodSupport.core.domain.enums.ItemType;
+
 import java.util.UUID;
 
 public abstract class Item {
@@ -7,20 +9,20 @@ public abstract class Item {
     private UUID itemId;
 
     private String name;
+    private ItemType itemType;
     private String description;
 
-    public Item(UUID itemId, String name, String description) {
+    public Item(UUID itemId, String name, ItemType itemType, String description) {
         this.itemId = itemId;
         this.name = name;
+        this.itemType = itemType;
         this.description = description;
     }
 
-    public Item(String name, String description) {
+    public Item(String name, ItemType itemType, String description) {
         this.name = name;
+        this.itemType = itemType;
         this.description = description;
-    }
-
-    public Item() {
     }
 
     public UUID getItemId() {
@@ -29,6 +31,14 @@ public abstract class Item {
 
     public void setItemId(UUID itemId) {
         this.itemId = itemId;
+    }
+
+    public ItemType getItemType() {
+        return itemType;
+    }
+
+    public void setItemType(ItemType itemType) {
+        this.itemType = itemType;
     }
 
     public String getName() {
