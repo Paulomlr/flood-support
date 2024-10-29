@@ -1,5 +1,6 @@
 package com.paulo.FloodSupport.core.domain;
 
+import com.paulo.FloodSupport.core.domain.enums.ItemType;
 import com.paulo.FloodSupport.core.domain.enums.UnitMeasurement;
 
 import java.time.LocalDate;
@@ -12,20 +13,17 @@ public class Food extends Item{
     private LocalDate expirationDate;
 
     public Food(UUID itemId, String name, String description, Double weight, UnitMeasurement unitMeasurement, LocalDate expirationDate) {
-        super(itemId, name, description);
+        super(itemId, name, ItemType.FOODS, description);
         this.weight = weight;
         this.unitMeasurement = unitMeasurement;
         this.expirationDate = expirationDate;
     }
 
     public Food(String name, String description, Double weight, UnitMeasurement unitMeasurement, LocalDate expirationDate) {
-        super(name, description);
+        super(name, ItemType.FOODS, description);
         this.weight = weight;
         this.unitMeasurement = unitMeasurement;
         this.expirationDate = expirationDate;
-    }
-
-    public Food() {
     }
 
     public Double getWeight() {
