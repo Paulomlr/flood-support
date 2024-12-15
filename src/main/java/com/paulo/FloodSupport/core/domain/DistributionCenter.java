@@ -12,7 +12,7 @@ public class DistributionCenter {
     private ResponsiblePerson responsiblePerson;
     private List<Donation> donations;
     private List<Order> ordersReceived;
-    private Map<Item, Integer> stock;
+    private Stock stock;
 
     public DistributionCenter(UUID distributionCenterId, String name, Address address, ResponsiblePerson responsiblePerson) {
         this.distributionCenterId = distributionCenterId;
@@ -21,7 +21,7 @@ public class DistributionCenter {
         this.responsiblePerson = responsiblePerson;
         this.donations = new ArrayList<>();
         this.ordersReceived = new ArrayList<>();
-        this.stock = new LinkedHashMap<>();
+        this.stock = new Stock();
     }
 
     public DistributionCenter(String name, Address address, ResponsiblePerson responsiblePerson) {
@@ -30,13 +30,13 @@ public class DistributionCenter {
         this.responsiblePerson = responsiblePerson;
         this.donations = new ArrayList<>();
         this.ordersReceived = new ArrayList<>();
-        this.stock = new LinkedHashMap<>();
+        this.stock = new Stock();
     }
 
     public DistributionCenter() {
         this.donations = new ArrayList<>();
         this.ordersReceived = new ArrayList<>();
-        this.stock = new LinkedHashMap<>();
+        this.stock = new Stock();
     }
 
     public UUID getDistributionCenterId() {
@@ -75,10 +75,6 @@ public class DistributionCenter {
         return donations;
     }
 
-    public Map<Item, Integer> getStock() {
-        return stock;
-    }
-
     public void addOrder(Order order) {
         this.ordersReceived.add(order);
     }
@@ -89,25 +85,22 @@ public class DistributionCenter {
 
     public void addDonation(Donation donation) {
         for(DonationItem donationItem : donation.getItems()) {
-            Item item = donationItem.getItem();
-            int currentQuantity = stock.getOrDefault(item, 0);
-            stock.put(item, currentQuantity + donationItem.getQuantity());
+            stock.addItem(donationItem.getItem(), donationItem.getQuantity());
         }
         this.donations.add(donation);
     }
 
     public boolean canStore(Item item, int quantityToAdd) {
-        int currentQuantity = stock.getOrDefault(item, 0);
+        int currentQuantity = stock.getTotalQuantityPerCategory(item.getItemType());
         return (currentQuantity + quantityToAdd) <= MAX_ITEM_CAPACITY;
     }
 
     public void updateStock(Item item, int quantityToDecreased) {
-        int currentQuantity = stock.getOrDefault(item, 0);
-        stock.put(item, currentQuantity - quantityToDecreased);
+        stock.removeItem(item, quantityToDecreased);
     }
 
     public boolean canSend(Item item, int quantityToAdd) {
-        int currentQuantity = stock.getOrDefault(item, 0);
+        int currentQuantity = stock.getQuantityPerItem(item.getItemType(), item.getName());
         return (currentQuantity - quantityToAdd) >= 0;
     }
 
