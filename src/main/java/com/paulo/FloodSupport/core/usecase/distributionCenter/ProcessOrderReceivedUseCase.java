@@ -2,7 +2,7 @@ package com.paulo.FloodSupport.core.usecase.distributionCenter;
 
 import com.paulo.FloodSupport.core.domain.Order;
 
-public interface AcceptOrderUseCase {
+public interface ProcessOrderReceivedUseCase {
 
-    void acceptOrder(Order order);
+    void processOrder(Order order);
 }
